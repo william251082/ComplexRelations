@@ -22,7 +22,7 @@ AppBundle\Entity\SubFamily:
 
 AppBundle\Entity\User:
     user_{1..10}:
-        email: weaverryan+<current()>@gmail.com
+        email: aquanaut<current()>@gmail.com
         plainPassword: iliketurtles
         roles: ['ROLE_ADMIN']
         avatarUri: <imageUrl(100, 100, 'abstract')>
