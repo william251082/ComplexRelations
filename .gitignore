@@ -14,3 +14,12 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+composer.json
+composer.lock
+.idea/complexRelations.iml
+.idea/php.xml
+.idea/dataSources/f2b07257-750a-4f9c-b5e0-1aa49d2e6969.xml
+symfony_requirements
+var/SymfonyRequirements.php
+web/config.php
+.gitignore
