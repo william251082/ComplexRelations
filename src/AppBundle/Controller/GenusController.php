@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Genus;
 use AppBundle\Entity\GenusNote;
 use AppBundle\Service\MarkdownTransformer;
+use Doctrine\ORM\Mapping\GeneratedValue;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,7 +43,7 @@ class GenusController extends Controller
 
         return new Response(sprintf(
             '<html><body>Genus created! <a href="%s">%s</a></body></html>',
-            $this->generateUrl('genus_show', ['genusName' => $genus->getName()]),
+            $this->generateUrl('genus_show', ['slug' => $genus->getSlug()]),
             $genus->getName()
         ));
     }
@@ -63,24 +64,20 @@ class GenusController extends Controller
     }
 
     /**
-     * @Route("/genus/{genusName}", name="genus_show")
+     * @Route("/genus/{slug}", name="genus_show")
+     * @param Genus $genus
+     *
+     * @return Response
      */
-    public function showAction($genusName)
+    public function showAction(Genus $genus)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $genus = $em->getRepository('AppBundle:Genus')
-            ->findOneBy(['name' => $genusName]);
-
-        if (!$genus) {
-            throw $this->createNotFoundException('genus not found');
-        }
 
         $markdownTransformer = $this->get('app.markdown_transformer');
         $funFact = $markdownTransformer->parse($genus->getFunFact());
 
         $this->get('logger')
-            ->info('Showing genus: '.$genusName);
+            ->info('Showing genus: '.$genus->getName());
 
         $recentNotes = $em->getRepository('AppBundle:GenusNote')
             ->findAllRecentNotesForGenus($genus);
@@ -93,8 +90,11 @@ class GenusController extends Controller
     }
 
     /**
-     * @Route("/genus/{name}/notes", name="genus_show_notes")
+     * @Route("/genus/{slug}/notes", name="genus_show_notes")
      * @Method("GET")
+     * @param Genus $genus
+     *
+     * @return JsonResponse
      */
     public function getNotesAction(Genus $genus)
     {
