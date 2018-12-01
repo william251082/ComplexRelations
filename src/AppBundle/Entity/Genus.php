@@ -26,6 +26,11 @@ class Genus
     private $name;
 
     /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private $slug;
+
+    /**
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SubFamily")
      * @ORM\JoinColumn(nullable=false)
@@ -146,5 +151,21 @@ class Genus
     {
         $this->firstDiscoveredAt = $firstDiscoveredAt;
 
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param mixed $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 }
