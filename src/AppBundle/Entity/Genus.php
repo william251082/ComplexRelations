@@ -69,7 +69,10 @@ class Genus
     private $notes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="studiedGenuses")
+     * @ORM\ManyToMany(targetEntity="User",
+     *                 inversedBy="studiedGenuses",
+     *                 fetch="EXTRA_LAZY"
+     *              )
      * @ORM\JoinTable(name="genus_scientist")
      */
     private $genusScientists;
