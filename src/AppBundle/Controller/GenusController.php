@@ -137,26 +137,14 @@ class GenusController extends Controller
             ->getDoctrine()
             ->getManager();
 
-        /** @var Genus $genus */
-        $genus = $em
-            ->getRepository('AppBundle:Genus')
-            ->find($genusId);
-
-        if (!$genus) {
-            throw $this->createNotFoundException('genus not found');
-        }
-
-        /** @var User $user */
         $genusScientist = $em
-            ->getRepository('AppBundle:User')
-            ->find($userId);
+            ->getRepository('AppBundle:GenusScientist')
+            ->findOneBy([
+                'user' => $userId,
+                'genus' => $genusId
+            ]);
 
-        if (!$genusScientist) {
-            throw $this->createNotFoundException('genus scientist not found');
-        }
-
-        $genus->removeGenusScientist($genusScientist);
-        $em->persist($genus);
+        $em->remove($genusScientist);
         $em->flush();
 
         return new Response(null, 204);
