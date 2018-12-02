@@ -227,10 +227,20 @@ class User implements UserInterface
         }
 
         $this->studiedGenuses[] = $genus;
+        // If you're modifying the inverse side of the relationship
+        // set the by reference to false and create adder and remover functions
+        // then set the owning side of Genus Scientist relationship
+        $genus->addGenusScientist($this);
     }
 
     public function removeStudiedGenus(Genus $genus)
     {
+        // to avoid infinite recursion
+        if (!$this->studiedGenuses->contains($genus)) {
+            return;
+        }
+
         $this->studiedGenuses->removeElement($genus);
+        $genus->removeGenusScientist($this);
     }
 }

@@ -186,12 +186,23 @@ class Genus
         if ($this->genusScientists->contains($user)) {
             return;
         }
+
         $this->genusScientists[] = $user;
+        // update $user to know that this genus is currently being studied by it.
+        // not needed for persistence, just keeping both sides in sync
+        $user->addStudiedGenus($this);
     }
 
     public function removeGenusScientist(User $user)
     {
+        // to avoid infinite recursion
+        if (!$this->genusScientists->contains($user)) {
+            return;
+        }
+
         $this->genusScientists->removeElement($user);
+        // not needed for persistence, just keeping both sides in sync
+        $user->removeStudiedGenus($this);
     }
 
     /**
