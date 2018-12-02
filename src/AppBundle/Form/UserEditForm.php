@@ -2,11 +2,11 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Genus;
 use AppBundle\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,6 +20,12 @@ class UserEditForm extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('universityName')
+            ->add('studiedGenuses', EntityType::class, [
+                'class' => Genus::class,
+                'multiple' => true,
+                'expanded' => true,
+                'choice_label' => 'name',
+            ])
         ;
     }
 
